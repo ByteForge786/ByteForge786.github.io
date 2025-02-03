@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Ruchi ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffccd5, #ff99ac);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 1s ease-in;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            margin: 15px;
+            min-height: 80vh;
+            position: relative;
+        }
+
+        .active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #d4145a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 2em; }
+
+        button {
+            background: linear-gradient(45deg, #ff6b95, #d4145a);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 20, 90, 0.3);
+        }
+
+        .game-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #ff6b95;
+            color: #ff6b95;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .choice-btn:hover {
+            background: #ff6b95;
+            color: white;
+        }
+
+        .heart {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ff6b95;
+            border-radius: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .result-text {
+            color: #d4145a;
+            font-size: 1.2em;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .poem-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #d4145a;
+            margin: 20px 0;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .step {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+
+            .game-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="container">
+        <div class="step active" id="step1">
+            <h1>Hey Ruchi! 🌹</h1>
+            <p>Got a minute? Want to play a little game? 😏</p>
+            <button onclick="handleInitialChoice(true)" class="choice-btn">Yes, I'm free!</button>
+            <button onclick="handleInitialChoice(false)" class="choice-btn">No, I'm busy</button>
+        </div>
+
+        <div class="step" id="step2">
+            <h2>Hmm... 🤔</h2>
+            <div id="teasingMessage" class="game-card"></div>
+            <button onclick="startRealGame()" id="startGameBtn" style="display: none;">Let's Begin! 💫</button>
+        </div>
+
+        <div class="step" id="step3">
+            <h2>Love Quiz Time! 💝</h2>
+            <div class="game-card">
+                <p>Question for my sweetheart:</p>
+                <p>What's your boyfriend's favorite thing about you?</p>
+                <button class="choice-btn" onclick="checkAnswer('voice')">My sweet voice when I call you baby 🎵</button>
+                <button class="choice-btn" onclick="checkAnswer('mature')">My maturity and understanding 💫</button>
+                <button class="choice-btn" onclick="checkAnswer('everything')">Everything, you're crazy about me! 😘</button>
+            </div>
+            <div id="quizResult" class="result-text"></div>
+        </div>
+
+        <div class="step" id="step3">
+            <h2>Unlock My Heart! 🔐</h2>
+            <div class="game-card">
+                <p>Complete this sentence:</p>
+                <p>"You're not just beautiful, you're also..."</p>
+                <input type="text" id="completePhrase" class="input-field" placeholder="Type your answer...">
+                <button onclick="checkPhrase()">Unlock ✨</button>
+            </div>
+            <div id="phraseResult" class="result-text"></div>
+        </div>
+
+        <div class="step" id="step4">
+            <h2>Love Temperature Game! 🌡️</h2>
+            <div class="game-card">
+                <p>How hot is our love? Click to find out!</p>
+                <div id="loveTemp"></div>
+                <button onclick="measureLove()">Measure Our Love 💕</button>
+            </div>
+        </div>
+
+        <div class="step" id="step5">
+            <h2>Catch Those Hearts! ❤️</h2>
+            <div class="game-card">
+                <p>Oh look, floating hearts! Think you can catch them all? 😏</p>
+                <div id="heartGame"></div>
+                <div id="heartGameMessage" class="result-text"></div>
+            </div>
+            <button onclick="nextStep()" id="nextButton5" style="display: none;">Continue the Adventure 💫</button>
+        </div>
+
+        <div class="step" id="step6">
+            <h2>Our Love Story 📖</h2>
+            <div class="game-card">
+                <div id="storyReveal"></div>
+                <button onclick="showMoreStory()" id="storyButton">Show Me More 💭</button>
+            </div>
+        </div>
+
+        <div class="step" id="step7">
+            <h2>Why You're Special 💫</h2>
+            <div id="specialReasons" class="game-card"></div>
+            <button onclick="nextStep()">Next Surprise 🎁</button>
+        </div>
+
+        <div class="step" id="step8">
+            <h2>A Birthday Poem 📝</h2>
+            <div class="game-card">
+                <div id="birthdayPoem" class="poem-text"></div>
+            </div>
+            <button onclick="nextStep()">Final Surprise 🌟</button>
+        </div>
+
+        <div class="step" id="step9">
+            <h2>Happy Birthday, My Love! 🎉</h2>
+            <div id="finalMessage" class="game-card"></div>
+            <button onclick="celebrate()">Celebrate! 🎊</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let teasingAttempts = 0;
+        const teasingResponses = [
+            {
+                yes: "Nahi nahi, abhi nahi! Try again? 😏",
+                no: "Arey arey, itni bhi kya busy ho? 😜"
+            },
+            {
+                yes: "Still not letting you in... thoda aur wait karo! 😈",
+                no: "Oh come on! Give me a chance na? 🥺"
+            },
+            {
+                yes: "Hehe sorry baby, bas thoda sa aur... 😋",
+                no: "Please please please? Last time promise! 🙏"
+            },
+            {
+                yes: "Okay okay, ab sach mein start karte hain! 💝",
+                no: "Fine fine, ab sach mein shuru karte hain! 💝"
+            }
+        ];
+
+        function handleInitialChoice(isYes) {
+            const messageDiv = document.getElementById('teasingMessage');
+            
+            if (teasingAttempts < 3) {
+                document.querySelector(`#step${currentStep}`).classList.remove('active');
+                currentStep = 2;
+                document.querySelector(`#step${currentStep}`).classList.add('active');
+                
+                messageDiv.innerHTML = isYes ? 
+                    teasingResponses[teasingAttempts].yes :
+                    teasingResponses[teasingAttempts].no;
+                
+                teasingAttempts++;
+                
+                setTimeout(() => {
+                    document.querySelector(`#step${currentStep}`).classList.remove('active');
+                    currentStep = 1;
+                    document.querySelector(`#step${currentStep}`).classList.add('active');
+                }, 2000);
+            } else {
+                document.querySelector(`#step${currentStep}`).classList.remove('active');
+                currentStep = 2;
+                document.querySelector(`#step${currentStep}`).classList.add('active');
+                messageDiv.innerHTML = "Sorry sorry masti kar raha tha! Ab pakka start karte hain... Ready for your special surprise? 🎁";
+                document.getElementById('startGameBtn').style.display = 'block';
+            }
+        }
+
+        function startRealGame() {
+            document.querySelector(`#step${currentStep}`).classList.remove('active');
+            currentStep = 3;
+            document.querySelector(`#step${currentStep}`).classList.add('active');
+        }
+
+        function nextStep() {
+            document.querySelector(`#step${currentStep}`).classList.remove('active');
+            currentStep++;
+            document.querySelector(`#step${currentStep}`).classList.add('active');
+            initializeStep(currentStep);
+        }
+
+        function checkAnswer(choice) {
+            const result = document.getElementById('quizResult');
+            const nextBtn = document.createElement('button');
+            nextBtn.onclick = nextStep;
+            nextBtn.innerHTML = "Next Surprise 💫";
+            nextBtn.style.display = 'none';
+            
+            switch(choice) {
+                case 'voice':
+                    result.innerHTML = "Baby, your voice is like a melody to my ears... but there's so much more! 💓";
+                    break;
+                case 'mature':
+                    result.innerHTML = "Ruchi, you're so right about that... but guess what? 💝";
+                    break;
+                case 'everything':
+                    result.innerHTML = "YESS! You got it! I'm absolutely crazy about everything that makes you YOU! 😍";
+                    break;
+            }
+            
+            setTimeout(() => {
+                result.innerHTML += "<br><br>My sweet Ruchi, you're the perfect package of sweetness, maturity, and everything beautiful! Can't believe you're mine! 🥰";
+                if (!document.getElementById('nextQuizBtn')) {
+                    nextBtn.id = 'nextQuizBtn';
+                    result.appendChild(document.createElement('br'));
+                    result.appendChild(document.createElement('br'));
+                    result.appendChild(nextBtn);
+                    nextBtn.style.display = 'inline-block';
+                }
+            }, 1500);
+        }
+
+        let storyParts = [
+            "Remember that first call? I was trying so hard to sound cool... and there you were, making me smile like an idiot with that sweet voice! 📞😅",
+            "And then our first meeting... Let's be honest, baby - I was pretending to be all calm but my heart was doing gymnastics! 🤸‍♂️💕",
+            "Look at us now... You, being all mature and amazing, and me, still grinning like a fool every time you call! 🥰",
+            "Guess what? You're stuck with this crazy guy who's absolutely smitten by you! No returns or exchanges accepted! 😘💝"
+        ];
+        let storyIndex = 0;
+
+        function showMoreStory() {
+            const storyDiv = document.getElementById('storyReveal');
+            const storyButton = document.getElementById('storyButton');
+            
+            if (storyIndex < storyParts.length) {
+                const p = document.createElement('p');
+                p.textContent = storyParts[storyIndex];
+                p.style.opacity = 0;
+                p.style.transition = 'opacity 0.5s';
+                storyDiv.appendChild(p);
+                setTimeout(() => p.style.opacity = 1, 100);
+                storyIndex++;
+                
+                if (storyIndex === storyParts.length) {
+                    storyButton.textContent = "Next Step 💫";
+                    storyButton.onclick = nextStep;
+                }
+            }
+        }
+
+        function checkPhrase() {
+            const input = document.getElementById('completePhrase').value.toLowerCase().trim();
+            const result = document.getElementById('phraseResult');
+
+            if (!input) {
+                result.innerHTML = "Aww come on! Don't be shy... write something for me! 😊";
+                return;
+            }
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.onclick = nextStep;
+            nextBtn.innerHTML = "Next Surprise 💫";
+            nextBtn.style.display = 'none';
+            
+            if (input.includes('smart') || input.includes('mature') || input.includes('sweet')) {
+                result.innerHTML = "Ruchi, you're everything and more! Smart, mature, sweet, and absolutely perfect! 😍";
+            } else {
+                result.innerHTML = "Aww baby! You're that and so much more... you're my perfect girl! 💖";
+            }
+            
+            setTimeout(() => {
+                result.innerHTML += "<br>You make me the luckiest guy in the world! 🥰";
+                if (!document.getElementById('nextPhraseBtn')) {
+                    nextBtn.id = 'nextPhraseBtn';
+                    result.appendChild(document.createElement('br'));
+                    result.appendChild(document.createElement('br'));
+                    result.appendChild(nextBtn);
+                    nextBtn.style.display = 'inline-block';
+                }
+            }, 1500);
+        }
+
+        function measureLove() {
+            const tempDiv = document.getElementById('loveTemp');
+            let temp = 0;
+            const interval = setInterval(() => {
+                temp += 1;
+                tempDiv.innerHTML = `${temp}°C of Pure Love 💕`;
+                if (temp >= 100) {
+                    clearInterval(interval);
+                    tempDiv.innerHTML += "<br>Our love is off the charts! 🔥";
+                    setTimeout(nextStep, 2000);
+                }
+            }, 30);
+        }
+
+        function initializeStep(step) {
+            switch(step) {
+                case 5:
+                    createHeartGame();
+                    break;
+                case 7:
+                    showSpecialReasons();
+                    break;
+                case 8:
+                    showPoem();
+                    break;
+                case 9:
+                    showFinalMessage();
+                    break;
+            }
+        }
+
+        function createHeartGame() {
+            const game = document.getElementById('heartGame');
+            const message = document.getElementById('heartGameMessage');
+            let heartsCollected = 0;
+            let gameStarted = false;
+            let hearts = [];
+            
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'clickable-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 80 + 10 + '%';
+                heart.style.top = Math.random() * 80 + 10 + '%';
+                heart.onclick = () => {
+                    gameStarted = true;
+                    heart.remove();
+                    heartsCollected++;
+                    updateMessage(heartsCollected);
+                };
+                game.appendChild(heart);
+                hearts.push(heart);
+            }
+
+            function updateMessage(count) {
+                switch(count) {
+                    case 1:
+                        message.innerHTML = "Hmm... not bad for a start! 😏";
+                        break;
+                    case 2:
+                        message.innerHTML = "Look who's getting good at catching hearts! 😉";
+                        break;
+                    case 3:
+                        message.innerHTML = "Well well, someone's on a roll! 💫";
+                        break;
+                    case 4:
+                        message.innerHTML = "Just like you caught my heart... so effortlessly! 🥰";
+                        break;
+                    case 5:
+                        message.innerHTML = "Would you look at that - you're a natural at stealing hearts! Just like you stole mine! ❤️";
+                        const continueBtn = document.createElement('button');
+                        continueBtn.innerHTML = "Next Surprise 💫";
+                        continueBtn.onclick = () => {
+                            // Only allow proceeding if all hearts are collected
+                            if (heartsCollected === 5) {
+                                nextStep();
+                            } else {
+                                message.innerHTML += "<br>Catch all the hearts first, baby! 😘";
+                            }
+                        };
+                        message.appendChild(document.createElement('br'));
+                        message.appendChild(document.createElement('br'));
+                        message.appendChild(continueBtn);
+                        break;
+                }
+            }
+
+            // Check if game is inactive after 5 seconds
+            setTimeout(() => {
+                if (!gameStarted && heartsCollected === 0) {
+                    message.innerHTML = "Come on Ruchi, try catching those hearts! They're just like me - totally falling for you! 😉";
+                }
+            }, 5000);
+
+            // Create the hearts
+            for (let i = 0; i < 5; i++) {
+                createHeart();
+            }
+
+            // Make hearts float around
+            setInterval(() => {
+                hearts.forEach(heart => {
+                    if (heart.parentElement) {
+                        heart.style.left = Math.random() * 80 + 10 + '%';
+                        heart.style.top = Math.random() * 80 + 10 + '%';
+                    }
+                });
+            }, 2000);
+        }
+
+        function showSpecialReasons() {
+            const reasons = [
+                "Baby Ruchi, your sweet voice melts my heart every time 💖",
+                "The way you understand me like no one else, my mature girl 🥰",
+                "How you make my day perfect just by saying 'baby' 💫",
+                "Your amazing combination of cuteness and maturity ✨",
+                "Being the most perfect girlfriend in the world! 💝"
+            ];
+
+            const container = document.getElementById('specialReasons');
+            reasons.forEach((reason, index) => {
+                setTimeout(() => {
+                    const p = document.createElement('p');
+                    p.textContent = reason;
+                    p.style.opacity = 0;
+                    p.style.transition = 'opacity 0.5s';
+                    container.appendChild(p);
+                    setTimeout(() => p.style.opacity = 1, 100);
+                }, index * 1000);
+            });
+        }
+
+        function showPoem() {
+            const poem = `
+                To my dearest Ruchi, so precious and true,
+                Every day I fall more in love with you.
+                Your smile brightens up my darkest night,
+                Making everything feel perfectly right.
+
+                You're the melody in my heart's sweet song,
+                The reason my love grows ever strong.
+                On this special day, I want you to know,
+                My love for you will forever grow.
+
+                Happy Birthday, my love divine,
+                So grateful that you're forever mine! 💝
+            `;
+            
+            typeWriter(poem, document.getElementById('birthdayPoem'));
+        }
+
+        function showFinalMessage() {
+            const message = `
+                My Precious Ruchi,
+
+                Who would've thought that one call would lead to finding the most amazing girl in the world? 
+                You're not just my girlfriend - you're my best friend, my favorite person, and the one who 
+                makes every day feel like a celebration!
+
+                You deserve the world and more, and I promise to keep trying to be the best boyfriend 
+                for the best girlfriend! 😊
+
+                Thank you for being YOU - absolutely perfect in every way!
+
+                Happy Birthday, my love! 🎂
+                
+                Forever Yours,
+                Your Lucky Boyfriend 💝
+            `;
+            
+            typeWriter(message, document.getElementById('finalMessage'));
+        }
+
+        function typeWriter(text, element, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                    }
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize confetti effect
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const confetti = [];
+        const confettiCount = 300;
+        const gravity = 0.5;
+        const terminalVelocity = 5;
+        const drag = 0.075;
+        const colors = [
+            { front: '#ff6b95', back: '#d4145a' },
+            { front: '#ffccd5', back: '#ff99ac' },
+            { front: '#ff85a1', back: '#ff5c8a' },
+            { front: '#ffa6c1', back: '#ff7aa6' },
+            { front: '#ffb8d1', back: '#ff8cb6' }
+        ];
+
+        function initConfetti() {
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push({
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    dimensions: {
+                        x: Math.random() * 10 + 5,
+                        y: Math.random() * 10 + 5
+                    },
+                    position: {
+                        x: Math.random() * canvas.width,
+                        y: canvas.height - 1
+                    },
+                    rotation: Math.random() * 2 * Math.PI,
+                    scale: {
+                        x: 1,
+                        y: 1
+                    },
+                    velocity: {
+                        x: Math.random() * 25 - 12.5,
+                        y: -(Math.random() * 15 + 15)
+                    }
+                });
+            }
+        }
+
+        function updateConfetti() {
+            for (let i = confetti.length - 1; i >= 0; i--) {
+                const confetto = confetti[i];
+                confetto.velocity.y += gravity;
+                confetto.velocity.x -= confetto.velocity.x * drag;
+                confetto.velocity.y = Math.min(confetto.velocity.y, terminalVelocity);
+                confetto.position.x += confetto.velocity.x;
+                confetto.position.y += confetto.velocity.y;
+                confetto.rotation += 0.1;
+                
+                if (confetto.position.y >= canvas.height) {
+                    confetti.splice(i, 1);
+                }
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            confetti.forEach((confetto) => {
+                ctx.save();
+                ctx.translate(confetto.position.x, confetto.position.y);
+                ctx.rotate(confetto.rotation);
+                ctx.fillStyle = confetto.color.front;
+                ctx.fillRect(-confetto.dimensions.x / 2, -confetto.dimensions.y / 2, 
+                           confetto.dimensions.x, confetto.dimensions.y);
+                ctx.restore();
+            });
+        }
+
+        let animationFrameId = null;
+        function animate() {
+            animationFrameId = requestAnimationFrame(animate);
+            updateConfetti();
+            drawConfetti();
+        }
+
+        function celebrate() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                confetti.length = 0;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            initConfetti();
+            animate();
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Create floating hearts background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 10000);
+        }
+
+        setInterval(createHeart, 1500);
+    </script>
+</body>
+</html>
