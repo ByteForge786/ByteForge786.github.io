@@ -352,7 +352,7 @@
                 nextBtn.innerHTML = "Next Surprise 💫";
                 result.appendChild(document.createElement('br'));
                 result.appendChild(nextBtn);
-            }, 2500); // Adjusted to 2.5 seconds for comfortable reading // Increased to 5 seconds
+            }, 2000); // Adjusted to 2.5 seconds for comfortable reading // Increased to 5 seconds
         }
 
         function checkPhrase() {
@@ -373,7 +373,7 @@
                 nextBtn.innerHTML = "Next Surprise 💫";
                 result.appendChild(document.createElement('br'));
                 result.appendChild(nextBtn);
-            }, 2500); // Adjusted to 2.5 seconds for optimal reading flow // Increased to 5 seconds
+            }, 2000); // Adjusted to 2.5 seconds for optimal reading flow // Increased to 5 seconds
         }
 
         function measureLove() {
@@ -384,8 +384,8 @@
                 tempDiv.innerHTML = `${temp}°C of Pure Love 💕`;
                 if (temp >= 100) {
                     clearInterval(interval);
-                    tempDiv.innerHTML += "<br>Our love is infinite... it broke the thermometer! 🌡️💘";
-                    setTimeout(nextStep, 5000); // Increased to 5 seconds
+                    tempDiv.innerHTML += "<br>Our love is infinite... it broke the thermometer! ...itna pyaar karti hai merese?🌡️💘";
+                    setTimeout(nextStep, 4000); // Increased to 5 seconds
                 }
             }, 30);
         }
