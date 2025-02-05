@@ -257,7 +257,7 @@
             <button onclick="nextStep()">Continue the Journey 🎈</button>
         </div>
 
-        <!-- Step 8: Photo Memory -->
+<!-- Step 8: Photo Memory -->
         <div class="step" id="step8">
             <h2>Remember this? 😁✨</h2>
             <div class="game-card">
@@ -266,6 +266,12 @@
                     <img src="IMG_20240922_152138906 (1).jpg" alt="Our Special Moment" id="couple-photo">
                 </div>
                 <p class="photo-caption">Me sacrificing my son's height for this 4 feet baddie 😁😁💫</p>
+                <!-- Add audio element -->
+                <audio id="photoAudio">
+                    <!-- Replace the src with your audio file path -->
+                    <source src="your-audio-file.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
             <button onclick="nextStep()">One Last Surprise 🎁</button>
         </div>
@@ -500,7 +506,17 @@
                     showSpecialReasons();
                     break;
                 case 8:
-                    // Add any photo initialization if needed
+                    // Play audio when photo appears
+                    const audio = document.getElementById('photoAudio');
+                    if (audio) {
+                        // Reset audio to start
+                        audio.currentTime = 0;
+                        // Play audio
+                        audio.play().catch(error => {
+                            console.log("Audio autoplay failed:", error);
+                            // You might want to show a play button here as fallback
+                        });
+                    }
                     break;
                 case 9:
                     showFinalMessage();
