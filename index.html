@@ -192,7 +192,7 @@
     <div class="container">
         <!-- Step 1: Welcome -->
         <div class="step active" id="step1">
-            <h1>Baby! 🌟</h1>
+            <h1>Hi Baby! 🌟</h1>
             <p>Phone ka brightness full kar. Ek adventure pe leke chalta hu. Dekhna hai?</p>
             <button onclick="handleInitialChoice(true)" class="choice-btn">Yes, take me on this adventure! 🎠</button>
             <button onclick="handleInitialChoice(false)" class="choice-btn">No, I am not interested... 🙈</button>
@@ -209,8 +209,8 @@
         <div class="step" id="step3">
             <h2>How much do you know me?! 🎯</h2>
             <div class="game-card">
-                <p>First Question for the Birthday Star:</p>
-                <p>What do I love most about you when I wake up every morning?</p>
+                <p>First Question:</p>
+                <p>Chal bata...What do I love most about you when I wake up every morning?</p>
                 <button class="choice-btn" onclick="checkAnswer('smile')">Knowing I'll see your beautiful smile 😊</button>
                 <button class="choice-btn" onclick="checkAnswer('voice')">Getting your sweet good morning message 💌</button>
                 <button class="choice-btn" onclick="checkAnswer('all')">All of the above, because you make every day special! 💫</button>
@@ -288,7 +288,7 @@
                 no: "Konse color ka belt leke aau bol? ! ⭐"
             },
             {
-                yes: "Soja re! kuch nai hai aage 🦄",
+                yes: "Phone ka brightness full kiya ?? 🦄",
                 no: "Teko sach mei dekhna hai kya hai aage? 🎂"
             },
             {
@@ -315,7 +315,7 @@
                     document.querySelector(`#step${currentStep}`).classList.remove('active');
                     currentStep = 1;
                     document.querySelector(`#step${currentStep}`).classList.add('active');
-                }, 3000);
+                }, 3500);
             } else {
                 document.querySelector(`#step${currentStep}`).classList.remove('active');
                 currentStep = 2;
@@ -385,16 +385,16 @@
                 if (temp >= 100) {
                     clearInterval(interval);
                     tempDiv.innerHTML += "<br>Our love is infinite... it broke the thermometer! ...itna pyaar karti hai merese?🌡️💘";
-                    setTimeout(nextStep, 4000); // Increased to 5 seconds
+                    setTimeout(nextStep, 5000); // Increased to 5 seconds
                 }
             }, 30);
         }
 
         const storyParts = [
-            "Remember our first shy hellos over 3 hour call? My heart was doing gymnastics while trying to act cool! 🎭",
-            "Then came our First day meet on 22nd September 2024, I was completely lost in those eyes and face while falling deeper in love with you 💫",
-            "Every single day since then has been like a page from a fairy tale, with you as my beautiful princess 👑",
-            "And here we are now, celebrating our first birthday together. I am excited for future baby! 🙏"
+            "Remember our first interaction, 3 hour call? My heart was doing gymnastics seriously, your voice was ❤️! 🎭",
+            "Then came our First meet on 22nd September 2024, I was completely lost in those eyes and face while falling deeper in love with you 💫",
+            "Baby, every single day since then has been like a page from a fairy tale, with you as my beautiful princess 👑",
+            "And here we are now, celebrating our first birthday together. I am excited for future baby! 👑"
         ];
         let storyIndex = 0;
 
